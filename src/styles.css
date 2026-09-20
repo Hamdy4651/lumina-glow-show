@@ -193,6 +193,30 @@
 .image-zoom img { transition: transform 1.2s cubic-bezier(.22,1,.36,1); }
 .image-zoom:hover img { transform: scale(1.055); }
 .image-zoom { border-radius: 1.25rem; }
+.mobile-card-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--champagne) transparent;
+}
+@media (max-width: 767px) {
+  .mobile-card-scroll {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: .25rem .25rem 1rem;
+    margin-inline: -.25rem;
+  }
+  .mobile-card-scroll > * {
+    flex: 0 0 min(84vw, 22rem);
+    scroll-snap-align: start;
+  }
+  #behandlungen .mobile-card-scroll > * { flex-basis: 78vw; }
+  #behandlungen .mobile-card-scroll .image-zoom { height: 22rem; }
+  #bewertungen .grid { grid-template-columns: none; }
+  .hero-copy { padding-top: 8rem; padding-bottom: 7rem; }
+  .hero-copy h1 { max-width: 8ch; font-size: clamp(3.4rem, 16vw, 5.6rem); }
+  .hero-copy p { max-width: 22rem; }
+}
 .stagger.is-visible > * { animation: card-arrive .8s cubic-bezier(.22,1,.36,1) both; }
 @keyframes card-arrive { from { opacity: 0; transform: translateY(28px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
 .hero-image { animation: hero-settle 2.2s cubic-bezier(.22,1,.36,1) both; }
