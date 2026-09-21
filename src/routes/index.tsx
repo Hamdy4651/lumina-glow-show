@@ -276,21 +276,79 @@ function Header() {
 }
 
 function Hero() {
-  const ref = useRef<HTMLImageElement>(null);
-  useEffect(() => { const onScroll = () => { if (ref.current && window.matchMedia("(prefers-reduced-motion: no-preference)").matches) ref.current.style.transform = `scale(1.08) translateY(${window.scrollY * .12}px)`; }; window.addEventListener("scroll", onScroll, { passive: true }); return () => window.removeEventListener("scroll", onScroll); }, []);
-  return <section id="top" className="relative min-h-[94svh] overflow-hidden bg-plum text-pearl">
-    <img ref={ref} src={hero} width={1920} height={1280} alt="Persönliche Beratung bei LUMINA" className="hero-image absolute inset-0 h-full w-full scale-110 object-cover object-[58%_28%] md:h-[130%] md:object-[66%_22%]" />
-    <div className="absolute inset-0 bg-gradient-to-r from-plum via-plum/70 to-plum/5" />
-    <div className="ambient absolute left-[8%] top-[18%] size-56 rounded-full bg-champagne/15 blur-3xl" />
-    <div className="editorial-container hero-copy relative z-10 flex min-h-[94svh] flex-col justify-center pb-20 pt-32">
-      <p className="eyebrow text-champagne">Ästhetische Medizin · Bochum</p>
-      <h1 className="mt-7 max-w-4xl font-display text-[clamp(3.8rem,9vw,8.8rem)] leading-[.84]">Natürlich schön.<br/><em className="font-normal text-champagne-soft">Ganz Sie.</em></h1>
-      <p className="mt-8 max-w-md text-base font-light leading-relaxed text-pearl/80 md:text-lg">Individuelle Beratung und moderne ästhetische Medizin mit Botox, Hyaluron und weiteren Verfahren für Ergebnisse, die zu Ihnen passen.</p>
-      <div className="mt-10 flex flex-wrap gap-3"><a href="#kontakt" className="bg-champagne px-6 py-4 text-xs font-semibold uppercase tracking-[.16em] text-plum">Termin buchen</a><a href="#behandlungen" className="flex items-center gap-2 border border-pearl/50 px-6 py-4 text-xs uppercase tracking-[.16em] text-pearl">Behandlungen <ArrowRight size={15}/></a></div>
-    </div>
-    <p className="absolute bottom-7 left-4 z-10 text-xs text-pearl/65 md:left-12">Brückstr. 44 · 44787 Bochum</p>
-    <a href="#werte" aria-label="Weiter scrollen" className="absolute bottom-6 right-6 z-10 grid size-12 place-items-center border border-pearl/40 text-pearl"><ArrowDown size={18}/></a>
-  </section>;
+  return (
+    <section
+      id="top"
+      className="relative min-h-[94svh] overflow-hidden bg-plum text-pearl"
+    >
+    <img
+  src={hero}
+  width={1920}
+  height={1280}
+  alt="Persönliche Beratung bei LUMINA"
+  className="
+    absolute inset-0
+    h-full w-full
+    scale-100
+    object-cover
+    object-[58%_35%]
+    md:object-[60%_35%]
+  "
+/>
+
+      <div className="absolute inset-0 bg-gradient-to-r from-plum via-plum/70 to-plum/5" />
+
+      <div className="ambient absolute left-[8%] top-[18%] size-56 rounded-full bg-champagne/15 blur-3xl" />
+
+      <div className="editorial-container hero-copy relative z-10 flex min-h-[94svh] flex-col justify-center pb-20 pt-32">
+        <p className="eyebrow text-champagne">
+          Ästhetische Medizin · Bochum
+        </p>
+
+        <h1 className="mt-7 max-w-4xl font-display text-[clamp(3.8rem,9vw,8.8rem)] leading-[.84]">
+          Natürlich schön.
+          <br />
+          <em className="font-normal text-champagne-soft">
+            Ganz Sie.
+          </em>
+        </h1>
+
+        <p className="mt-8 max-w-md text-base font-light leading-relaxed text-pearl/80 md:text-lg">
+          Individuelle Beratung und moderne ästhetische Medizin mit Botox,
+          Hyaluron und weiteren Verfahren für Ergebnisse, die zu Ihnen passen.
+        </p>
+
+        <div className="mt-10 flex flex-wrap gap-3">
+          <a
+            href="#kontakt"
+            className="bg-champagne px-6 py-4 text-xs font-semibold uppercase tracking-[.16em] text-plum"
+          >
+            Termin buchen
+          </a>
+
+          <a
+            href="#behandlungen"
+            className="flex items-center gap-2 border border-pearl/50 px-6 py-4 text-xs uppercase tracking-[.16em] text-pearl"
+          >
+            Behandlungen
+            <ArrowRight size={15} />
+          </a>
+        </div>
+      </div>
+
+      <p className="absolute bottom-7 left-4 z-10 text-xs text-pearl/65 md:left-12">
+        Brückstr. 44 · 44787 Bochum
+      </p>
+
+      <a
+        href="#werte"
+        aria-label="Weiter scrollen"
+        className="absolute bottom-6 right-6 z-10 grid size-12 place-items-center border border-pearl/40 text-pearl"
+      >
+        <ArrowDown size={18} />
+      </a>
+    </section>
+  );
 }
 
 function PhilosophieSection() { return <section className="section-pad overflow-hidden bg-pearl"><div className="editorial-container grid items-center gap-16 lg:grid-cols-[1.05fr_.95fr]">
