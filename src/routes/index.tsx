@@ -291,8 +291,8 @@ function Hero() {
     h-full w-full
     scale-100
     object-cover
-    object-[58%_35%]
-    md:object-[60%_35%]
+    object-[50%_50%]
+    md:object-[50%_50%]
   "
 />
 
