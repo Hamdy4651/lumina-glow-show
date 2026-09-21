@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, ChevronDown, Menu, MessageCircle, Minus, Plus, Quote, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import hero from "../assets/lumina-hero.jpg";
+import hero from "../assets/lumina-hero.jpeg";
 import portrait from "../assets/lumina-portrait-01.jpg";
 import interior from "../assets/lumina-interior.jpg";
 import skin from "../assets/lumina-skin-detail.jpg";
@@ -41,35 +41,245 @@ function useReveal() {
   }, []);
 }
 
+// ── Ergänzung: dünner Scroll-Fortschrittsbalken ganz oben ──────────────────
+function ScrollProgress() {
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      setProgress(max > 0 ? (window.scrollY / max) * 100 : 0);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return <div className="fixed inset-x-0 top-0 z-[60] h-[2px] bg-transparent">
+    <div className="h-full bg-champagne transition-[width] duration-150 ease-out" style={{ width: `${progress}%` }} />
+  </div>;
+}
+
+// ── Header: Mega-Menü & Mobil-Menü öffnen jetzt weich statt abrupt ────────
+// Header schlanker gemacht: weniger Padding, etwas kleinere Logo-/Button-
+// Maße. Auf großen Bildschirmen wirkte er zu wuchtig im Vergleich zum
+// sonst sehr leichten, editorialen Stil der Seite — vor allem der solide
+// TERMIN-Button zog optisch zu viel Gewicht auf sich.
+
 function Header() {
-  const [compact, setCompact] = useState(false); const [open, setOpen] = useState(false); const [mega, setMega] = useState(false);
-  useEffect(() => { const onScroll = () => setCompact(window.scrollY > 48); window.addEventListener("scroll", onScroll, { passive: true }); return () => window.removeEventListener("scroll", onScroll); }, []);
-  const nav = [{ label: "Ablauf", href: "#ablauf" }, { label: "Preise", href: "#preise" }, { label: "Über uns", href: "#ueber-uns" }, { label: "Kontakt", href: "#kontakt" }];
-  return <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${compact ? "bg-plum/90 py-2 shadow-xl backdrop-blur-xl" : "bg-gradient-to-b from-plum/85 to-transparent py-4"}`}>
-    <div className="editorial-container grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 lg:grid-cols-[auto_1fr_auto]">
-      <a href="#top" aria-label="LUMINA Startseite" className="flex w-24 shrink-0 items-center gap-2 lg:w-28"><img src="/favicon.png" alt="LUMINA" className="size-8 object-contain" /><span className="font-display text-xl tracking-[.08em] text-pearl">LUMINA</span></a>
-      <nav className="hidden justify-center gap-7 text-sm text-pearl lg:flex">
-        <button onClick={() => setMega(!mega)} className="flex items-center gap-1 bg-transparent transition-colors hover:text-champagne">Behandlungen <ChevronDown size={14}/></button>
-        {nav.map((item) => <a key={item.href} href={item.href} className="transition-colors hover:text-champagne">{item.label}</a>)}
-      </nav>
-      <div className="flex items-center justify-end gap-2">
-        <a href="https://wa.me/4915777779962" aria-label="WhatsApp" className="grid size-10 place-items-center border border-pearl/40 text-pearl transition-colors hover:border-champagne hover:text-champagne"><MessageCircle size={18}/></a>
-        <a href="#kontakt" className="hidden border border-champagne bg-champagne px-5 py-3 text-xs font-semibold uppercase tracking-[.16em] text-plum transition-colors hover:bg-champagne-soft sm:block">Termin</a>
-        <button aria-label="Menü öffnen" onClick={() => setOpen(!open)} className="grid size-10 place-items-center text-pearl lg:hidden">{open ? <X/> : <Menu/>}</button>
+  const [compact, setCompact] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [mega, setMega] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setCompact(window.scrollY > 48);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  const nav = [
+    { label: "Ablauf", href: "#ablauf" },
+    { label: "Preise", href: "#preise" },
+    { label: "Über uns", href: "#ueber-uns" },
+    { label: "Kontakt", href: "#kontakt" },
+  ];
+
+  return (
+    <header
+      className={`
+        fixed inset-x-0 top-0 z-50
+        transition-all duration-500
+        ${
+          compact
+            ? "bg-plum/90 py-1.5 shadow-xl backdrop-blur-xl"
+            : "bg-gradient-to-b from-plum/85 to-transparent py-3"
+        }
+      `}
+    >
+      <div className="editorial-container relative">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 lg:grid-cols-[auto_1fr_auto]">
+          
+          {/* Logo */}
+          <a
+            href="#top"
+            aria-label="LUMINA Startseite"
+            className="flex w-24 shrink-0 items-center gap-2 lg:w-28"
+          >
+            <img
+              src="/favicon.png"
+              alt="LUMINA"
+              className="size-7 object-contain"
+            />
+
+            <span className="font-display text-lg tracking-[.08em] text-pearl">
+              LUMINA
+            </span>
+          </a>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden justify-center gap-6 text-sm text-pearl lg:flex">
+            <button
+              type="button"
+              onClick={() => setMega((prev) => !prev)}
+              className="flex items-center gap-1 bg-transparent transition-colors hover:text-champagne"
+            >
+              Behandlungen
+
+              <ChevronDown
+                size={14}
+                className={`transition-transform duration-300 ${
+                  mega ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {nav.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="transition-colors hover:text-champagne"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center justify-end gap-2">
+            <a
+              href="https://wa.me/4915777779962"
+              aria-label="WhatsApp"
+              className="
+                grid size-9 place-items-center
+                border border-pearl/40
+                text-pearl
+                transition-colors
+                hover:border-champagne
+                hover:text-champagne
+              "
+            >
+              <MessageCircle size={16} />
+            </a>
+
+            <a
+              href="#kontakt"
+              className="
+                hidden
+                border border-champagne
+                bg-champagne
+                px-4 py-2.5
+                text-xs font-semibold uppercase
+                tracking-[.16em]
+                text-plum
+                transition-colors
+                hover:bg-champagne-soft
+                sm:block
+              "
+            >
+              Termin
+            </a>
+
+            <button
+              type="button"
+              aria-label="Menü öffnen"
+              onClick={() => setOpen((prev) => !prev)}
+              className="grid size-9 place-items-center text-pearl lg:hidden"
+            >
+              {open ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop Mega Menu */}
+        <div
+          className={`
+            absolute left-0 right-0 top-full
+            hidden lg:block
+            overflow-hidden
+            border-t border-pearl/10
+            bg-plum/95
+            shadow-2xl
+            backdrop-blur-xl
+            transition-all duration-300 ease-out
+            ${
+              mega
+                ? "visible translate-y-0 opacity-100"
+                : "invisible -translate-y-2 opacity-0 pointer-events-none"
+            }
+          `}
+        >
+          <div className="grid grid-cols-3 gap-10 p-8 text-pearl">
+            {treatments.map((t) => (
+              <a
+                href="#behandlungen"
+                onClick={() => setMega(false)}
+                key={t.name}
+                className="group"
+              >
+                <span className="font-display text-2xl transition-colors group-hover:text-champagne">
+                  {t.name}
+                </span>
+
+                <span className="mt-1 block text-xs text-pearl/60">
+                  {t.note}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        <nav
+          className={`
+            grid
+            overflow-hidden
+            bg-plum
+            text-pearl
+            transition-[max-height,opacity]
+            duration-300
+            ease-out
+            lg:hidden
+            ${
+              open
+                ? "max-h-96 py-6 opacity-100"
+                : "max-h-0 py-0 opacity-0"
+            }
+          `}
+        >
+          <a
+            href="#behandlungen"
+            onClick={() => setOpen(false)}
+            className="border-b border-pearl/15 py-3"
+          >
+            Behandlungen
+          </a>
+
+          {nav.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={() => setOpen(false)}
+              className="border-b border-pearl/15 py-3"
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
       </div>
-    </div>
-    {mega && <div className="editorial-container mt-3 hidden grid-cols-3 gap-10 border-t border-pearl/20 bg-plum/95 p-8 text-pearl shadow-2xl backdrop-blur-xl lg:grid">
-      {treatments.map((t) => <a href="#behandlungen" onClick={() => setMega(false)} key={t.name} className="group"><span className="font-display text-2xl group-hover:text-champagne">{t.name}</span><span className="mt-1 block text-xs text-pearl/60">{t.note}</span></a>)}
-    </div>}
-    {open && <nav className="mt-2 grid gap-1 bg-plum px-5 py-6 text-pearl lg:hidden"><a href="#behandlungen" onClick={() => setOpen(false)} className="border-b border-pearl/15 py-3">Behandlungen</a>{nav.map((item) => <a key={item.href} href={item.href} onClick={() => setOpen(false)} className="border-b border-pearl/15 py-3">{item.label}</a>)}</nav>}
-  </header>;
+    </header>
+  );
 }
 
 function Hero() {
   const ref = useRef<HTMLImageElement>(null);
-  useEffect(() => { const onScroll = () => { if (ref.current && window.matchMedia("(prefers-reduced-motion: no-preference)").matches) ref.current.style.transform = `scale(1.02) translateY(${window.scrollY * .12}px)`; }; window.addEventListener("scroll", onScroll, { passive: true }); return () => window.removeEventListener("scroll", onScroll); }, []);
+  useEffect(() => { const onScroll = () => { if (ref.current && window.matchMedia("(prefers-reduced-motion: no-preference)").matches) ref.current.style.transform = `scale(1.08) translateY(${window.scrollY * .12}px)`; }; window.addEventListener("scroll", onScroll, { passive: true }); return () => window.removeEventListener("scroll", onScroll); }, []);
   return <section id="top" className="relative min-h-[94svh] overflow-hidden bg-plum text-pearl">
-    <img ref={ref} src={hero} width={1920} height={1280} alt="Persönliche Beratung bei LUMINA" className="hero-image absolute inset-0 h-full w-full object-cover object-[50%_center] md:h-[115%] md:object-[62%_center]" />
+    <img ref={ref} src={hero} width={1920} height={1280} alt="Persönliche Beratung bei LUMINA" className="hero-image absolute inset-0 h-full w-full scale-110 object-cover object-[58%_28%] md:h-[130%] md:object-[66%_22%]" />
     <div className="absolute inset-0 bg-gradient-to-r from-plum via-plum/70 to-plum/5" />
     <div className="ambient absolute left-[8%] top-[18%] size-56 rounded-full bg-champagne/15 blur-3xl" />
     <div className="editorial-container hero-copy relative z-10 flex min-h-[94svh] flex-col justify-center pb-20 pt-32">
@@ -83,18 +293,18 @@ function Hero() {
   </section>;
 }
 
+function PhilosophieSection() { return <section className="section-pad overflow-hidden bg-pearl"><div className="editorial-container grid items-center gap-16 lg:grid-cols-[1.05fr_.95fr]">
+  <div className="reveal relative grid grid-cols-2 gap-4 pb-12"><div className="arch image-zoom h-[34rem] self-start"><img loading="lazy" width={1024} height={1536} src={portrait} alt="Natürliche Schönheit" className="image-tone h-full w-full object-cover"/></div><div className="arch image-zoom mt-28 h-[27rem]"><img loading="lazy" width={1024} height={1536} src={doctor} alt="LUMINA Ärztin" className="image-tone h-full w-full object-cover"/></div><span className="absolute bottom-0 right-0 font-display text-7xl italic text-blush/60">L</span></div>
+  <div className="reveal lg:pl-8"><p className="eyebrow text-plum-3">Unsere Philosophie</p><h2 className="mt-6 font-display text-5xl leading-[1.02] md:text-7xl">Nicht verändern.<br/><em className="text-plum-3">Verfeinern.</em></h2><p className="mt-8 max-w-lg text-lg font-light leading-8 text-muted-ink">Wir betrachten jedes Gesicht als individuelle Komposition. Unser Ziel ist kein neuer Ausdruck, sondern die schönste, erholteste Version Ihrer selbst.</p><div className="mt-10 h-px w-24 bg-champagne"/></div>
+  </div></section>; }
+
+function WerteSection() { return <section id="werte" className="bg-plum pb-12 pt-20 text-pearl md:pt-28"><div className="editorial-container stagger grid grid-cols-2 gap-px bg-pearl/15 lg:grid-cols-4">{[[12,"+","Jahre Erfahrung"],[980,"+","Behandlungen"],[4.9,"","Bewertung"],[100,"%","Individuell"]].map(([n,s,l]) => <div key={String(l)} className="bg-plum px-4 py-8 text-center"><strong className="font-display text-4xl font-normal text-champagne md:text-6xl">{typeof n === "number" && n % 1 ? n : <Counter target={n as number} suffix={s as string}/>}</strong><span className="mt-2 block text-xs uppercase tracking-[.15em] text-pearl/60">{l}</span></div>)}</div></section>; }
+
 function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
   const [value, setValue] = useState(0); const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => { const el = ref.current; if (!el) return; const io = new IntersectionObserver(([entry]) => { if (!entry?.isIntersecting) return; const start = performance.now(); const tick = (now:number) => { const p = Math.min((now-start)/1500,1); setValue(Math.round(target*(1-Math.pow(1-p,3)))); if(p<1) requestAnimationFrame(tick); }; requestAnimationFrame(tick); io.disconnect(); }); io.observe(el); return () => io.disconnect(); }, [target]);
   return <span ref={ref}>{value}{suffix}</span>;
 }
-
-function WerteSection() { return <section id="werte" className="bg-plum py-12 text-pearl"><div className="editorial-container stagger grid grid-cols-2 gap-px bg-pearl/15 lg:grid-cols-4">{[[12,"+","Jahre Erfahrung"],[980,"+","Behandlungen"],[4.9,"","Bewertung"],[100,"%","Individuell"]].map(([n,s,l]) => <div key={String(l)} className="bg-plum px-4 py-8 text-center"><strong className="font-display text-4xl font-normal text-champagne md:text-6xl">{typeof n === "number" && n % 1 ? n : <Counter target={n as number} suffix={s as string}/>}</strong><span className="mt-2 block text-xs uppercase tracking-[.15em] text-pearl/60">{l}</span></div>)}</div></section>; }
-
-function PhilosophieSection() { return <section className="section-pad overflow-hidden bg-pearl"><div className="editorial-container grid items-center gap-16 lg:grid-cols-[1.05fr_.95fr]">
-  <div className="reveal relative grid grid-cols-2 gap-4 pb-12"><div className="arch image-zoom h-[34rem] self-start"><img loading="lazy" width={1024} height={1536} src={portrait} alt="Natürliche Schönheit" className="image-tone h-full w-full object-cover"/></div><div className="arch image-zoom mt-28 h-[27rem]"><img loading="lazy" width={1024} height={1536} src={doctor} alt="LUMINA Ärztin" className="image-tone h-full w-full object-cover"/></div><span className="absolute bottom-0 right-0 font-display text-7xl italic text-blush/60">L</span></div>
-  <div className="reveal lg:pl-8"><p className="eyebrow text-plum-3">Unsere Philosophie</p><h2 className="mt-6 font-display text-5xl leading-[1.02] md:text-7xl">Nicht verändern.<br/><em className="text-plum-3">Verfeinern.</em></h2><p className="mt-8 max-w-lg text-lg font-light leading-8 text-muted-ink">Wir betrachten jedes Gesicht als individuelle Komposition. Unser Ziel ist kein neuer Ausdruck, sondern die schönste, erholteste Version Ihrer selbst.</p><div className="mt-10 h-px w-24 bg-champagne"/></div>
-  </div></section>; }
 
 function QuoteBand() { return <section className="relative grid min-h-[68vh] place-items-center overflow-hidden text-center text-pearl"><img loading="lazy" width={1792} height={1024} src={skin} alt="Natürliche Haut im Licht" className="image-tone absolute inset-0 h-full w-full object-cover"/><div className="absolute inset-0 bg-plum/65"/><blockquote className="reveal relative z-10 max-w-5xl px-6 font-display text-4xl italic leading-tight md:text-7xl">„Schönheit beginnt dort, wo Sie sich wiedererkennen.“</blockquote></section>; }
 
@@ -106,7 +316,23 @@ function SignatureSection() { return <section className="section-pad bg-pearl-2"
 
 function AngeboteSection(){ return <section className="bg-plum-2 py-16 text-pearl"><div className="editorial-container reveal"><div className="grid gap-6 md:grid-cols-[.7fr_1.3fr]"><div><p className="eyebrow text-champagne">Aktuell bei LUMINA</p><h2 className="mt-4 font-display text-4xl">Unsere Angebote</h2></div><div className="mobile-card-scroll">{[["4 Zonen Botox","Jede weitere Zone 59 €","240 €"],["Russische Lippen Technik","Mit Juvederm, statt 240 €","219 €"],["Doppelkinn Lemon Bottle","3 Sitzungen, statt 360 €","299 €"],["Skin Booster mit Profhilo","3 Sitzungen, statt 750 €","599 €"]].map(([a,b,c])=><div key={a} className="grid grid-cols-[minmax(0,1fr)_auto] items-center border-b border-pearl/20 py-5"><div><strong className="font-display text-2xl font-normal">{a}</strong><span className="ml-4 hidden text-sm text-pearl/55 sm:inline">{b}</span></div><span className="border border-champagne px-3 py-1 text-xs text-champagne">{c}</span></div>)}</div></div></div></section> }
 
-function BeforeAfter({ image, position, setPosition }: { image:string; position:number; setPosition:(n:number)=>void }) { return <div className="luxury-card relative aspect-[4/5] overflow-hidden bg-plum"><img loading="lazy" src={image} alt="Vorher: unruhiges Hautbild" className="absolute inset-0 h-full w-full object-cover saturate-0 brightness-75 contrast-75 blur-[.2px]"/><div className="absolute inset-y-0 left-0 overflow-hidden" style={{width:`${position}%`}}><img loading="lazy" src={image} alt="Nachher: ebenmäßigeres Hautbild" className="h-full max-w-none object-cover saturate-100 contrast-100" style={{width:"calc((min(100vw, 84rem) - 3.5rem) / 3)"}}/></div><div className="pointer-events-none absolute inset-y-0 w-px bg-pearl" style={{left:`${position}%`}}><span className="absolute left-1/2 top-1/2 grid size-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-pearl font-display text-plum">↔</span></div><input aria-label="Vorher-Nachher-Vergleich" type="range" min="8" max="92" value={position} onChange={e=>setPosition(Number(e.target.value))} className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"/><span className="absolute bottom-4 left-4 text-xs uppercase text-pearl">Nachher</span><span className="absolute bottom-4 right-4 text-xs uppercase text-pearl">Vorher</span></div> }
+// ── BeforeAfter: dezenter Puls am Regler, bis einmal interagiert wurde ────
+function BeforeAfter({ image, position, setPosition }: { image:string; position:number; setPosition:(n:number)=>void }) {
+  const [touched, setTouched] = useState(false);
+  return <div className="luxury-card relative aspect-[4/5] overflow-hidden bg-plum">
+    <img loading="lazy" src={image} alt="Vorher: unruhiges Hautbild" className="absolute inset-0 h-full w-full object-cover saturate-0 brightness-75 contrast-75 blur-[.2px]"/>
+    <div className="absolute inset-y-0 left-0 overflow-hidden" style={{width:`${position}%`}}><img loading="lazy" src={image} alt="Nachher: ebenmäßigeres Hautbild" className="h-full max-w-none object-cover saturate-100 contrast-100" style={{width:"calc((min(100vw, 84rem) - 3.5rem) / 3)"}}/></div>
+    <div className="pointer-events-none absolute inset-y-0 w-px bg-pearl" style={{left:`${position}%`}}>
+      <span className="absolute left-1/2 top-1/2 grid size-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-pearl font-display text-plum">
+        {!touched && <span className="absolute inset-0 animate-ping rounded-full bg-pearl/70" />}
+        <span className="relative">↔</span>
+      </span>
+    </div>
+    <input aria-label="Vorher-Nachher-Vergleich" type="range" min="8" max="92" value={position} onPointerDown={() => setTouched(true)} onChange={e=>setPosition(Number(e.target.value))} className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"/>
+    <span className="absolute bottom-4 left-4 text-xs uppercase text-pearl">Nachher</span>
+    <span className="absolute bottom-4 right-4 text-xs uppercase text-pearl">Vorher</span>
+  </div>;
+}
 function VorherNachherSection(){ const [positions,setPositions]=useState([52,45,58]); const imgs=[client,skin,portrait]; return <section className="section-pad bg-pearl"><div className="editorial-container"><div className="reveal text-center"><p className="eyebrow text-plum-3">Ergebnisse</p><h2 className="mt-5 font-display text-5xl md:text-7xl">Subtil. Sichtbar. <em>Sie.</em></h2><p className="mx-auto mt-5 max-w-lg text-sm text-muted-ink">Die linke Seite zeigt ein bewusst reduziertes Hautbild als illustrative Vorher-Darstellung. Echte Ergebnisse variieren und werden nach Einwilligung ergänzt.</p></div><div className="stagger mobile-card-scroll mt-14 grid gap-5 md:grid-cols-3">{imgs.map((img,i)=><BeforeAfter key={img} image={img} position={positions[i] ?? 50} setPosition={(n)=>setPositions(p=>p.map((v,x)=>x===i?n:v))}/>)}</div></div></section> }
 
 function BewertungenSection(){ const reviews=[
@@ -125,4 +351,4 @@ function KontaktSection(){ const faqs=["Wie läuft die Erstberatung ab?","Wie na
 
 function FooterSection(){ return <footer className="overflow-hidden bg-ink pb-10 pt-20 text-pearl"><div className="editorial-container grid gap-10 border-b border-pearl/20 pb-16 md:grid-cols-4"><div><div className="flex items-center gap-3"><img src="/favicon.png" alt="LUMINA" className="size-10 object-contain"/><span className="font-display text-3xl tracking-[.08em]">LUMINA</span></div><p className="mt-5 text-sm leading-6 text-pearl/55">Ästhetische Medizin<br/>mit Feingefühl.</p></div><div><p className="eyebrow text-champagne">Behandlungen</p><p className="mt-5 text-sm leading-7 text-pearl/60">Botox & Faltenbehandlung<br/>Hyaluron & Filler<br/>Skin Booster & PRP</p></div><div><p className="eyebrow text-champagne">Praxis</p><p className="mt-5 text-sm leading-7 text-pearl/60">Über uns<br/>Angebote<br/>Kontakt</p></div><div><p className="eyebrow text-champagne">Adresse</p><p className="mt-5 text-sm leading-7 text-pearl/60">Brückstr. 44<br/>44787 Bochum<br/>015 77777 9962</p></div></div><div className="editorial-container flex justify-between pt-6 text-xs text-pearl/40"><span>© 2026 LUMINA Klinik</span><span>Impressum · Datenschutz</span></div><div aria-hidden="true" className="pointer-events-none -mb-20 mt-8 text-center font-display text-[clamp(7rem,20vw,18rem)] leading-none text-transparent [-webkit-text-stroke:1px_var(--champagne)] opacity-35">LUMINA</div></footer> }
 
-function Index() { useReveal(); return <main><Header/><Hero/><WerteSection/><PhilosophieSection/><QuoteBand/><AblaufSection/><BehandlungenSection/><SignatureSection/><AngeboteSection/><VorherNachherSection/><BewertungenSection/><GalerieSection/><PreiseSection/><UeberUnsSection/><KontaktSection/><FooterSection/></main>; }
+function Index() { useReveal(); return <main><ScrollProgress/><Header/><Hero/><PhilosophieSection/><WerteSection/><QuoteBand/><AblaufSection/><BehandlungenSection/><SignatureSection/><AngeboteSection/><VorherNachherSection/><BewertungenSection/><GalerieSection/><PreiseSection/><UeberUnsSection/><KontaktSection/><FooterSection/></main>; }
