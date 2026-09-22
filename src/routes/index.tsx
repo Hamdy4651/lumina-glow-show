@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, ChevronDown, Menu, MessageCircle, Minus, Plus, Quote, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import hero from "../assets/lumina-hero.jpg";
+import heroMobile from "../assets/lumina-hero-mobile.jpg";
 import portrait from "../assets/lumina-portrait-01.jpg";
 import interior from "../assets/lumina-interior.jpg";
 import skin from "../assets/lumina-skin-detail.jpg";
@@ -282,13 +283,16 @@ function Hero() {
       className="relative min-h-[94svh] overflow-hidden bg-plum text-pearl"
     >
       <div className="hero-media absolute inset-0">
-        <img
-          src={hero}
-          width={1920}
-          height={1280}
-          alt="Persönliche Beratung bei LUMINA"
-          className="hero-image h-full w-full object-cover object-[64%_center] md:object-[58%_center]"
-        />
+        <picture>
+          <source media="(max-width: 767px)" srcSet={heroMobile} />
+          <img
+            src={hero}
+            width={1920}
+            height={1280}
+            alt="Ärztin und Patientin im persönlichen Beratungsgespräch bei LUMINA"
+            className="hero-image absolute inset-0 h-full w-full object-cover object-center md:object-[58%_center]"
+          />
+        </picture>
       </div>
 
       <div className="hero-overlay absolute inset-0" />
