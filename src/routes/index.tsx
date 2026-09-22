@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, ChevronDown, Menu, MessageCircle, Minus, Plus, Quote, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import hero from "../assets/lumina-hero.jpeg";
+import hero from "../assets/lumina-hero.jpg";
 import portrait from "../assets/lumina-portrait-01.jpg";
 import interior from "../assets/lumina-interior.jpg";
 import skin from "../assets/lumina-skin-detail.jpg";
@@ -281,23 +281,18 @@ function Hero() {
       id="top"
       className="relative min-h-[94svh] overflow-hidden bg-plum text-pearl"
     >
-    <img
-  src={hero}
-  width={1920}
-  height={1280}
-  alt="Persönliche Beratung bei LUMINA"
-  className="
-    absolute inset-0
-    h-full w-full
-    scale-100
-    object-cover
-    object-[50%_50%]
-    md:object-[50%_50%]
-  "
-/>
+      <div className="hero-media absolute inset-0">
+        <img
+          src={hero}
+          width={1920}
+          height={1280}
+          alt="Persönliche Beratung bei LUMINA"
+          className="hero-image h-full w-full object-cover object-[64%_center] md:object-[58%_center]"
+        />
+      </div>
 
-      <div className="absolute inset-0 bg-gradient-to-r from-plum via-plum/70 to-plum/5" />
-
+      <div className="hero-overlay absolute inset-0" />
+      <div className="hero-grain absolute inset-0" />
       <div className="ambient absolute left-[8%] top-[18%] size-56 rounded-full bg-champagne/15 blur-3xl" />
 
       <div className="editorial-container hero-copy relative z-10 flex min-h-[94svh] flex-col justify-center pb-20 pt-32">
