@@ -123,7 +123,7 @@ function Header() {
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden justify-center gap-6 text-sm text-pearl lg:flex">
+          <nav className="luxury-nav hidden justify-center gap-6 text-sm text-pearl lg:flex">
             <button
               type="button"
               onClick={() => setMega((prev) => !prev)}
@@ -304,7 +304,7 @@ function Hero() {
           Ästhetische Medizin · Bochum
         </p>
 
-        <h1 className="mt-7 max-w-4xl font-display text-[clamp(3.8rem,9vw,8.8rem)] leading-[.84]">
+        <h1 className="hero-title mt-7 max-w-4xl font-display text-[clamp(3.8rem,9vw,8.8rem)] leading-[.84]">
           Natürlich schön.
           <br />
           <em className="font-normal text-champagne-soft">
@@ -320,14 +320,14 @@ function Hero() {
         <div className="mt-10 flex flex-wrap gap-3">
           <a
             href="#kontakt"
-            className="bg-champagne px-6 py-4 text-xs font-semibold uppercase tracking-[.16em] text-plum"
+            className="luxury-action luxury-action-primary bg-champagne px-6 py-4 text-xs font-semibold uppercase tracking-[.16em] text-plum"
           >
             Termin buchen
           </a>
 
           <a
             href="#behandlungen"
-            className="flex items-center gap-2 border border-pearl/50 px-6 py-4 text-xs uppercase tracking-[.16em] text-pearl"
+            className="luxury-action luxury-action-secondary flex items-center gap-2 border border-pearl/50 px-6 py-4 text-xs uppercase tracking-[.16em] text-pearl"
           >
             Behandlungen
             <ArrowRight size={15} />
@@ -342,7 +342,7 @@ function Hero() {
       <a
         href="#werte"
         aria-label="Weiter scrollen"
-        className="absolute bottom-6 right-6 z-10 grid size-12 place-items-center border border-pearl/40 text-pearl"
+        className="scroll-cue absolute bottom-6 right-6 z-10 grid size-12 place-items-center border border-pearl/40 text-pearl"
       >
         <ArrowDown size={18} />
       </a>
@@ -363,7 +363,7 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
   return <span ref={ref}>{value}{suffix}</span>;
 }
 
-function QuoteBand() { return <section className="relative grid min-h-[68vh] place-items-center overflow-hidden text-center text-pearl"><img loading="lazy" width={1792} height={1024} src={skin} alt="Natürliche Haut im Licht" className="image-tone absolute inset-0 h-full w-full object-cover"/><div className="absolute inset-0 bg-plum/65"/><blockquote className="reveal relative z-10 max-w-5xl px-6 font-display text-4xl italic leading-tight md:text-7xl">„Schönheit beginnt dort, wo Sie sich wiedererkennen.“</blockquote></section>; }
+function QuoteBand() { return <section className="quote-band relative grid min-h-[68vh] place-items-center overflow-hidden text-center text-pearl"><img loading="lazy" width={1792} height={1024} src={skin} alt="Natürliche Haut im Licht" className="cinematic-image image-tone absolute inset-0 h-full w-full object-cover"/><div className="absolute inset-0 bg-plum/65"/><blockquote className="reveal relative z-10 max-w-5xl px-6 font-display text-4xl italic leading-tight md:text-7xl">„Schönheit beginnt dort, wo Sie sich wiedererkennen.“</blockquote></section>; }
 
 function AblaufSection() { const steps = [["I","Kennenlernen","Ihre Wünsche, Ihre Geschichte, Ihr Tempo."],["II","Analyse","Präzise Beratung ohne vorgefertigten Plan."],["III","Behandlung","Behutsam, transparent und medizinisch fundiert."],["IV","Begleitung","Wir bleiben auch danach an Ihrer Seite."]]; return <section id="ablauf" className="section-pad relative overflow-hidden bg-plum text-pearl"><img loading="lazy" width={1792} height={1024} src={bokeh} alt="Ruhige Atmosphäre" className="absolute inset-0 h-full w-full object-cover opacity-20"/><div className="ambient absolute right-[12%] top-[20%] size-72 rounded-full bg-champagne/15 blur-3xl"/><div className="editorial-container relative"><p className="eyebrow text-champagne">Ihr Weg bei LUMINA</p><h2 className="mt-6 max-w-3xl font-display text-5xl md:text-7xl">Vier Schritte. Ein Ergebnis, das sich nach Ihnen anfühlt.</h2><div className="stagger mobile-card-scroll mt-16 grid gap-4 md:grid-cols-4">{steps.map(([num,title,text])=><article key={num} className="luxury-card min-h-64 bg-plum/85 p-7 backdrop-blur-sm"><span className="font-display text-5xl text-champagne">{num}</span><h3 className="mt-12 font-display text-2xl">{title}</h3><p className="mt-3 text-sm font-light leading-6 text-pearl/65">{text}</p></article>)}</div></div></section>; }
 
