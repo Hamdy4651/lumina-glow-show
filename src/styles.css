@@ -206,7 +206,9 @@
     scroll-snap-type: x mandatory;
     padding: .25rem .25rem 1rem;
     margin-inline: -.25rem;
+    
   }
+  .hero-copy { justify-content: flex-end; }
   .mobile-card-scroll > * {
     flex: 0 0 min(84vw, 22rem);
     scroll-snap-align: start;
@@ -214,9 +216,12 @@
   #behandlungen .mobile-card-scroll > * { flex-basis: 78vw; }
   #behandlungen .mobile-card-scroll .image-zoom { height: 22rem; }
   #bewertungen .grid { grid-template-columns: none; }
-  .hero-copy { padding-top: 8rem; padding-bottom: 7rem; }
+  /* .hero-copy { padding-top: 8rem; padding-bottom: 7rem; }
   .hero-copy h1 { max-width: 8ch; font-size: clamp(3.4rem, 16vw, 5.6rem); }
-  .hero-copy p { max-width: 22rem; }
+  .hero-copy p { max-width: 22rem; } */
+  .hero-copy { justify-content: flex-start; padding-top: 1.5rem; padding-bottom: 4rem; }
+.hero-copy h1 { max-width: none; font-size: clamp(3.2rem, 15vw, 5rem); }
+.hero-copy p { max-width: 22rem; }
 }
 .stagger.is-visible > * { animation: card-arrive .8s cubic-bezier(.22,1,.36,1) both; }
 @keyframes card-arrive { from { opacity: 0; transform: translateY(28px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }

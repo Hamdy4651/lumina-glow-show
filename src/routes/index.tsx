@@ -279,38 +279,31 @@ function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-[94svh] overflow-hidden bg-plum text-pearl"
+      className="relative overflow-hidden bg-plum text-pearl md:min-h-[100svh]"
     >
-    <img
-  src={hero}
-  width={1920}
-  height={1280}
-  alt="Persönliche Beratung bei LUMINA"
-  className="
-    absolute inset-0
-    h-full w-full
-    scale-100
-    object-cover
-    object-[50%_50%]
-    md:object-[50%_50%]
-  "
-/>
+      {/* الصورة: في الموبايل بلوك لوحدها فوق، في الديسكتوب خلفية كاملة */}
+      <div className="relative h-[48svh] w-full md:absolute md:inset-0 md:h-full">
+        <img
+          src={hero}
+          width={1920}
+          height={1280}
+          alt="Persönliche Beratung bei LUMINA"
+          className="h-full w-full object-cover object-[40%_30%] md:object-[50%_50%]"
+        />
 
-      <div className="absolute inset-0 bg-gradient-to-r from-plum via-plum/70 to-plum/5" />
+        {/* Mobil: sanfter Verlauf nur am unteren Rand / Desktop: horizontal */}
+        <div className="absolute inset-0 bg-gradient-to-b from-plum/70 via-transparent to-plum md:bg-gradient-to-r md:from-plum md:via-plum/70 md:to-plum/5" />
+      </div>
 
-      <div className="ambient absolute left-[8%] top-[18%] size-56 rounded-full bg-champagne/15 blur-3xl" />
+      <div className="ambient absolute left-[8%] top-[18%] hidden size-56 rounded-full bg-champagne/15 blur-3xl md:block" />
 
-      <div className="editorial-container hero-copy relative z-10 flex min-h-[94svh] flex-col justify-center pb-20 pt-32">
-        <p className="eyebrow text-champagne">
-          Ästhetische Medizin · Bochum
-        </p>
+      <div className="editorial-container hero-copy relative z-10 flex flex-col justify-center pb-20 pt-10 md:min-h-[100svh] md:pt-32">
+        <p className="eyebrow text-champagne">Ästhetische Medizin · Bochum</p>
 
         <h1 className="mt-7 max-w-4xl font-display text-[clamp(3.8rem,9vw,8.8rem)] leading-[.84]">
           Natürlich schön.
           <br />
-          <em className="font-normal text-champagne-soft">
-            Ganz Sie.
-          </em>
+          <em className="font-normal text-champagne-soft">Ganz Sie.</em>
         </h1>
 
         <p className="mt-8 max-w-md text-base font-light leading-relaxed text-pearl/80 md:text-lg">
@@ -319,15 +312,14 @@ function Hero() {
         </p>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <a
-            href="#kontakt"
+          
+           <a href="#kontakt"
             className="bg-champagne px-6 py-4 text-xs font-semibold uppercase tracking-[.16em] text-plum"
           >
             Termin buchen
           </a>
-
-          <a
-            href="#behandlungen"
+          
+         <a   href="#behandlungen"
             className="flex items-center gap-2 border border-pearl/50 px-6 py-4 text-xs uppercase tracking-[.16em] text-pearl"
           >
             Behandlungen
@@ -336,14 +328,11 @@ function Hero() {
         </div>
       </div>
 
-      <p className="absolute bottom-7 left-4 z-10 text-xs text-pearl/65 md:left-12">
-        Brückstr. 44 · 44787 Bochum
-      </p>
+   
 
-      <a
-        href="#werte"
+      <a  href="#werte"
         aria-label="Weiter scrollen"
-        className="absolute bottom-6 right-6 z-10 grid size-12 place-items-center border border-pearl/40 text-pearl"
+        className="absolute bottom-6 right-6 z-10 hidden size-12 place-items-center border border-pearl/40 text-pearl md:grid"
       >
         <ArrowDown size={18} />
       </a>
