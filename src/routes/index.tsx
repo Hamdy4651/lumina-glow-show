@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, ChevronDown, Menu, MessageCircle, Minus, Plus, Quote, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import hero from "../assets/lumina-hero.jpg";
+import hero from "../assets/lumina-hero.jpeg";
 import heroMobile from "../assets/lumina-hero-mobile.jpg";
 import portrait from "../assets/lumina-portrait-01.jpg";
 import interior from "../assets/lumina-interior.jpg";
